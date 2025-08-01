@@ -143,21 +143,40 @@ def signup_view(request):
 
 def login_view(request):
     if request.method == 'POST':
-        email = request.POST.get('email', '')
+        identifier = request.POST.get('identifier', '').strip()  # Can be email or user_id
         password = request.POST.get('password', '')
 
-        # Authenticate user
-        user = authenticate(request, username=email, password=password)
-        if user is not None:
-            login(request, user)
-            return JsonResponse({
-                'status': 'success',
-                'message': 'Login successful! Redirecting...'
-            })
-        else:
+        # Try authenticating with identifier as email or user_id
+        user = None
+        try:
+            # First, try as email
+            user = authenticate(request, username=identifier, password=password)
+            
+            # If email fails, try as user_id
+            if user is None:
+                try:
+                    numeric_user_id = int(identifier)
+                    account = Account.objects.get(user_id=numeric_user_id)
+                    user = authenticate(request, username=account.email, password=password)
+                except (ValueError, Account.DoesNotExist):
+                    pass
+            # Invalid UUID or user_id not found
+
+            if user is not None:
+                login(request, user)
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Login successful! Redirecting...'
+                })
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Invalid email/user ID or password.'
+                })
+        except Exception as e:
             return JsonResponse({
                 'status': 'error',
-                'message': 'Invalid email or password.'
+                'message': f'Error during login: {str(e)}'
             })
 
     return render(request, 'auth/client_login.html')

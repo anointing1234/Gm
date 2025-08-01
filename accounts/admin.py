@@ -3,11 +3,44 @@ from unfold.admin import ModelAdmin, StackedInline
 from django.utils.html import format_html
 from django.utils import timezone
 from django import forms
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.contrib.admin.views.decorators import staff_member_required
+from django.urls import path
 from .models import Account, Balance, Investment, InvestmentHistory
 import logging
-
+from decimal import Decimal
 
 logger = logging.getLogger(__name__)
+
+# Custom form for admin user creation
+class AccountCreationForm(forms.ModelForm):
+    password = forms.CharField(
+        widget=forms.PasswordInput,
+        required=True,
+        label="Password",
+        help_text="Enter a secure password for the user."
+    )
+
+    class Meta:
+        model = Account
+        fields = ('email', 'fullname', 'phone', 'address', 'gender', 'password')
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if Account.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered.")
+        return email
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data['password'])  # Hash the password
+        if commit:
+            user.save()
+            # Create balance for the user
+            Balance.objects.create(user=user)
+        return user
 
 # Inline for Balance (one-to-one with Account)
 class BalanceInline(StackedInline):
@@ -35,26 +68,23 @@ class InvestmentInline(StackedInline):
 class InvestmentHistoryInline(StackedInline):
     model = InvestmentHistory
     can_delete = True
-    extra = 0  # Changed to 0 to prevent automatic empty forms
+    extra = 0
     fields = ('date', 'description', 'amount', 'status')
     readonly_fields = ('date',)
 
     def get_formset(self, request, obj=None, **kwargs):
         formset = super().get_formset(request, obj, **kwargs)
         if obj:
-            # Only set initial if the fields exist
             if 'user' in formset.form.base_fields:
                 formset.form.base_fields['user'].initial = obj.user
             if 'investment' in formset.form.base_fields:
                 formset.form.base_fields['investment'].initial = obj
         return formset
 
-
     def save_formset(self, request, form, formset, change):
-        # Only save valid InvestmentHistory entries
         instances = formset.save(commit=False)
         for instance in instances:
-            if instance.amount is not None and instance.description:  # Ensure required fields
+            if instance.amount is not None and instance.description:
                 instance.save()
         formset.save_m2m()
 
@@ -80,13 +110,13 @@ class InvestmentForm(forms.ModelForm):
 
 @admin.register(Account)
 class AccountAdmin(ModelAdmin):
-    list_display = ('profile_picture_thumbnail', 'email', 'username', 'fullname', 'phone', 'gender', 'currency', 'is_active', 'is_staff', 'is_admin', 'date_joined')
+    list_display = ('user_id', 'profile_picture_thumbnail', 'email', 'username', 'fullname', 'phone', 'gender', 'currency', 'is_active', 'is_staff', 'is_admin', 'date_joined')
     list_filter = ('is_active', 'is_staff', 'is_admin', 'currency', 'gender')
-    search_fields = ('email', 'username', 'fullname', 'phone', 'gender')
-    readonly_fields = ('date_joined', 'last_login', 'username')
+    search_fields = ('user_id', 'email', 'username', 'fullname', 'phone', 'gender')
+    readonly_fields = ('user_id', 'date_joined', 'last_login', 'username')
     fieldsets = (
         (None, {
-            'fields': ('email', 'fullname', 'phone', 'gender', 'address', 'currency', 'profile_picture')
+            'fields': ('user_id', 'email', 'fullname', 'phone', 'gender', 'address', 'currency', 'profile_picture')
         }),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_admin', 'is_superuser', 'groups', 'user_permissions')
@@ -97,6 +127,7 @@ class AccountAdmin(ModelAdmin):
     )
     inlines = [BalanceInline, InvestmentInline]
     list_per_page = 25
+    form = AccountCreationForm
 
     def profile_picture_thumbnail(self, obj):
         if obj.profile_picture and hasattr(obj, 'get_profile_picture_url'):
@@ -109,6 +140,40 @@ class AccountAdmin(ModelAdmin):
             return self.readonly_fields + ('email', 'fullname', 'phone', 'gender', 'address', 'currency', 'profile_picture')
         return self.readonly_fields
 
+    def get_urls(self):
+        urls = super().get_urls()
+        custom_urls = [
+            path('create-user/', staff_member_required(self.admin_create_user_view), name='admin_create_user'),
+        ]
+        return custom_urls + urls
+
+    def admin_create_user_view(self, request):
+        if request.method == 'POST':
+            form = AccountCreationForm(request.POST)
+            if form.is_valid():
+                try:
+                    user = form.save()
+                    logger.info(f"Admin created user: {user.email}")
+                    return JsonResponse({
+                        'status': 'success',
+                        'message': 'User created successfully!'
+                    })
+                except Exception as e:
+                    logger.error(f"Error creating user: {str(e)}")
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': f'Error creating user: {str(e)}'
+                    })
+            else:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Invalid form data.',
+                    'errors': form.errors
+                })
+        else:
+            form = AccountCreationForm()
+        return render(request, 'auth/admin_create_user.html', {'form': form})
+
 @admin.register(Balance)
 class BalanceAdmin(ModelAdmin):
     list_display = ('user', 'Active_Initial_Investment', 'Total_Return', 'Total_Available_Withdrawal', 'investment_status')
@@ -117,10 +182,6 @@ class BalanceAdmin(ModelAdmin):
     readonly_fields = ('user',)
     fields = ('user', 'Active_Initial_Investment', 'Total_Return', 'Total_Available_Withdrawal', 'investment_status')
     list_per_page = 25
-
-
-
-from decimal import Decimal
 
 @admin.register(Investment)
 class InvestmentAdmin(ModelAdmin):
@@ -138,7 +199,7 @@ class InvestmentAdmin(ModelAdmin):
             raise ValueError("Investment must have a user associated")
         super().save_model(request, obj, form, change)
         
-        if not change:  # Only create history for new investments
+        if not change:
             user = obj.user
             description = form.cleaned_data.get('transaction_description') or f"New investment of {obj.amount} created on {timezone.now().date()}"
             
@@ -157,12 +218,9 @@ class InvestmentAdmin(ModelAdmin):
 
             try:
                 balance, created = Balance.objects.get_or_create(user=user)
-                
-                # 🛠️ Use Decimal math to prevent float rounding issues
                 balance.Active_Initial_Investment = (
                     Decimal(balance.Active_Initial_Investment or 0) + Decimal(obj.amount)
                 )
-                
                 balance.save()
                 logger.info(f"Updated balance for user {user.email} with investment: {obj.amount}")
             except Exception as e:
@@ -186,8 +244,6 @@ class InvestmentAdmin(ModelAdmin):
             return ('user',)
         return ()
 
-
-
 @admin.register(InvestmentHistory)
 class InvestmentHistoryAdmin(ModelAdmin):
     list_display = ('user', 'date', 'description', 'amount', 'status')
@@ -197,3 +253,49 @@ class InvestmentHistoryAdmin(ModelAdmin):
     fields = ('user', 'investment', 'date', 'description', 'amount', 'status')
     date_hierarchy = 'date'
     list_per_page = 25
+
+# Existing views
+def signup_view(request):
+    return JsonResponse({
+        'status': 'error',
+        'message': 'User registration is restricted to admin users only.'
+    })
+
+def login_view(request):
+    if request.method == 'POST':
+        identifier = request.POST.get('identifier', '').strip()
+        password = request.POST.get('password', '')
+
+        user = None
+        try:
+            # First, try as email
+            user = authenticate(request, username=identifier, password=password)
+            
+            # If email fails, try as user_id
+            if user is None:
+                try:
+                    # Convert identifier to integer for numeric user_id
+                    user_id = int(identifier)
+                    account = Account.objects.get(user_id=user_id)
+                    user = authenticate(request, username=account.email, password=password)
+                except (ValueError, Account.DoesNotExist):
+                    pass  # Invalid number or user_id not found
+
+            if user is None:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Invalid email/user ID or password.'
+                })
+
+            login(request, user)
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Login successful! Redirecting...'
+            })
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': f'Error during login: {str(e)}'
+            })
+
+    return render(request, 'auth/client_login.html')

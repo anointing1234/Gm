@@ -6,7 +6,7 @@ from django.contrib.auth.models import Group, Permission
 import uuid
 from django.utils import timezone
 from django.utils.crypto import get_random_string
-
+import random
 
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -30,6 +30,11 @@ class MyAccountManager(BaseUserManager):
         
         return self.create_user(email, password, **extra_fields)
 
+
+def temporary_numeric_id():
+    """Generate a temporary 6-digit numeric ID (to be finalized in migration)."""
+    return random.randint(100000, 999999)
+
 class Account(AbstractBaseUser, PermissionsMixin):
     GENDER_CHOICES = (
         ('M', 'Male'),
@@ -38,6 +43,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
         ('P', 'Prefer not to say'),
     )
     
+    user_id = models.BigIntegerField(default=temporary_numeric_id, editable=False, unique=True, null=True)
     email = models.EmailField(verbose_name="email", max_length=100, unique=True)
     username = models.CharField(max_length=100, unique=True, editable=False)
     date_joined = models.DateTimeField(auto_now_add=True)
@@ -93,10 +99,9 @@ class Account(AbstractBaseUser, PermissionsMixin):
         if self.profile_picture and self.profile_picture.url:
             return self.profile_picture.url
         return '/media/profile_pics/profile_pic.png'
-    
-    
-    
-    
+
+
+
 
 class Balance(models.Model):
     INVESTMENT_STATUS = [
