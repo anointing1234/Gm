@@ -146,9 +146,15 @@
                             <hr class="w-75 mx-auto"/>
                         </li>
                     </ul>
-                    <div class="w-100 mb-2">
-                        <button class="logout btn btn-sm w-100 btn-outline-danger m-0 nav-link-text" type="button"><span class="fa-solid fa-sign-out-alt fa-flip-horizontal ps-2"></span>LOGOUT</button>
-                    </div>
+                <form method="POST" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <div class="w-100 mb-2">
+                    <button class="logout btn btn-sm w-100 btn-outline-danger m-0 nav-link-text" type="submit">
+                        <span class="fa-solid fa-sign-out-alt fa-flip-horizontal ps-2"></span>LOGOUT
+                    </button>
+                </div>
+            </form>
+
                 </div>
             </div>
         </nav>
@@ -738,6 +744,23 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 });
 </script>
+
+
+
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/688ce678cfc5fc192486f57f/1j1j68ib8';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 
 
 

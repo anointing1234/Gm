@@ -90,9 +90,6 @@ def signup_view(request):
     return render(request,'auth/client_signup.html')
 
 
-def logout(request):
-    return render(request,'')
-
 
 
 def signup_view(request):
@@ -206,3 +203,13 @@ def get_days_count(request):
         else:
             return JsonResponse({'days_count': 0})
     return JsonResponse({'error': 'Unauthorized'}, status=401)
+
+
+
+def logout_view(request):
+    """Logs out the user and redirects to the login page."""
+    if request.method == "POST":
+        auth_logout(request)
+        request.session.flush()
+        return redirect("home") 
+    return redirect("home") 
