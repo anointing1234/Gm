@@ -116,7 +116,7 @@ class AccountAdmin(ModelAdmin):
     readonly_fields = ('user_id', 'date_joined', 'last_login', 'username')
     fieldsets = (
         (None, {
-            'fields': ('user_id', 'email', 'fullname', 'phone', 'gender', 'address', 'currency', 'profile_picture')
+            'fields': ('user_id', 'email', 'fullname', 'phone','password', 'gender', 'address', 'currency', 'profile_picture')
         }),
         ('Permissions', {
             'fields': ('is_active', 'is_staff', 'is_admin', 'is_superuser', 'groups', 'user_permissions')
