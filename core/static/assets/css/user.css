@@ -1,0 +1,419 @@
+/* -------------------------------------------------------------------------- */
+/*                             Personal Styles                                 */
+/* -------------------------------------------------------------------------- */
+/*.password-show-hide {*/
+/*    padding-right: calc(1.5em + 0.625rem);*/
+/*    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%232c7be5'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23e63757' stroke='none'/%3e%3c/svg%3e");*/
+/*    background-repeat: no-repeat;*/
+/*    background-position: right calc(0.375em + 0.15625rem) center;*/
+/*    background-size: calc(0.75em + 0.3125rem) calc(0.75em + 0.3125rem);*/
+/*}*/
+
+.dark-selection::selection {
+    --falcon-bg-opacity: 1;
+    background-color: rgba(var(--falcon-gray-700-rgb), var(--falcon-bg-opacity)) !important;
+}
+
+.dark-selection::-moz-selection {
+    --falcon-bg-opacity: 1;
+    background-color: rgba(var(--falcon-gray-700-rgb), var(--falcon-bg-opacity)) !important;
+}
+
+.form-floating > .form-control-me:focus ~ label::after,
+.form-floating > .form-control-me:not(:placeholder-shown) ~ label::after {
+    background-color: transparent;
+}
+
+.form-control-me:focus {
+    border-color: rgba(136, 136, 136, 0.34) !important;
+    box-shadow: none !important;
+}
+
+.my-bg {
+    background-color: #FFFFFF !important;
+    /*background-color: #1F1F1F !important;*/
+}
+
+.my-bg2 {
+    background-color: #d2e3dd !important;
+    /*background-color: #1F1F1F !important;*/
+}
+
+
+.header-bg {
+    background-color: #5d7970 !important;
+}
+
+.my-bg-modal {
+    background-color: #0d74af !important;
+}
+
+.my-link {
+    color: #0d74af !important;
+    /*background-color: #1F1F1F !important;*/
+}
+
+.my-link:hover {
+    color: #0A5783 !important;
+}
+
+.my-button {
+    color: #FFFFFF !important;
+    background-color: #128020 !important;
+}
+
+.my-button:hover {
+    background-color: #0E6018 !important;
+}
+
+
+.my-blue-bg {
+    background-color: #0A5783 !important;
+}
+
+.my-blue-color {
+    color: #0A5783 !important;
+}
+
+.form-control-dark {
+    background-color: #1F1F1F !important;
+    border-color: #6C6C6C !important;
+    color: lightgray !important;
+}
+
+.form-control-dark::placeholder,
+.form-control-dark:placeholder-shown {
+    color: #6C6C6C;
+}
+
+.form-floating > .form-control-dark:focus ~ label::after,
+.form-floating > .form-control-dark:not(:placeholder-shown) ~ label::after {
+    background-color: transparent;
+}
+
+.form-control-dark:focus {
+    background-color: #1F1F1F !important;
+    border-color: #2C519B !important;
+    box-shadow: none !important;
+    color: lightgray !important;
+}
+
+
+#psHeaderBG {
+    background-image: url(../img/illustrations/ticket-bg.png) !important;
+    background-size: contain;
+}
+
+.container-bg {
+    background-color: #ffffff !important;
+    background-image: url(../img/illustrations/bg.jpg) !important;
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+}
+
+#uploadContainer:hover {
+    opacity: 1 !important;
+}
+
+.isDisabled {
+    color: rgb(128, 128, 128) !important;
+    cursor: not-allowed !important;
+    opacity: 0.5 !important;
+    text-decoration: none !important;
+    pointer-events: none;
+}
+
+.cash-flow-chart {
+    min-height: 18.4375rem;
+}
+
+@media (min-width: 1540px) {
+    .cash-flow-chart {
+        min-height: 15.625rem;
+    }
+}
+
+.card-title-2 {
+    top: -0.4rem;
+    left: 1rem;
+}
+
+.mouse_scroll {
+    position: absolute;
+    top: 50%;
+    left: 48.5%;
+    /*transform: translate(-50%, -50%);*/
+    display: block;
+    margin: 0 auto;
+    width: 24px;
+    height: 100px;
+    z-index: 99999;
+}
+
+
+.m_scroll_arrows {
+    display: block;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    border-right: 2px solid #0d74af;
+    border-bottom: 2px solid #0d74af;
+    margin: 0 0 3px 4px;
+    width: 12px;
+    height: 12px;
+}
+
+.m_scroll_arrows-white {
+    display: block;
+    -ms-transform: rotate(45deg); /* IE 9 */
+    -webkit-transform: rotate(45deg); /* Chrome, Safari, Opera */
+    transform: rotate(45deg);
+    border-right: 2px solid #FFFFFF;
+    border-bottom: 2px solid #FFFFFF;
+    margin: 0 0 3px 4px;
+    width: 12px;
+    height: 12px;
+}
+
+.unu {
+    margin-top: 1px;
+}
+
+.unu, .doi, .trei {
+    -webkit-animation: mouse-scroll 1s infinite;
+    -moz-animation: mouse-scroll 1s infinite;
+    animation: mouse-scroll 1s infinite;
+}
+
+.unu {
+    -webkit-animation-delay: .1s;
+    -moz-animation-delay: .1s;
+    -webkit-animation-direction: alternate;
+    animation-direction: alternate;
+    animation-delay: alternate;
+}
+
+.doi {
+    -webkit-animation-delay: .2s;
+    -moz-animation-delay: .2s;
+    -webkit-animation-direction: alternate;
+    animation-delay: .2s;
+    animation-direction: alternate;
+    margin-top: -6px;
+}
+
+.trei {
+    -webkit-animation-delay: .3s;
+    -moz-animation-delay: .3s;
+    -webkit-animation-direction: alternate;
+    animation-delay: .3s;
+    animation-direction: alternate;
+    margin-top: -6px;
+}
+
+.mouse {
+    height: 38px;
+    width: 20px;
+    border-radius: 14px;
+    transform: none;
+    border: 2px solid #0d74af;
+    top: 170px;
+}
+
+.mouse-white {
+    height: 38px;
+    width: 20px;
+    border-radius: 14px;
+    transform: none;
+    border: 2px solid #FFFFFF;
+    top: 170px;
+}
+
+.wheel {
+    display: block;
+    margin: 5px auto;
+    background: #0d74af;
+    position: relative;
+    height: 4px;
+    width: 4px;
+    border: 2px solid #0d74af;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.wheel-white {
+    display: block;
+    margin: 5px auto;
+    background: #ffffff;
+    position: relative;
+    height: 4px;
+    width: 4px;
+    border: 2px solid #ffffff;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
+}
+
+.wheel {
+    -webkit-animation: mouse-wheel 0.6s linear infinite;
+    -moz-animation: mouse-wheel 0.6s linear infinite;
+    animation: mouse-wheel 0.6s linear infinite;
+}
+
+@-webkit-keyframes mouse-wheel {
+    0% {
+        opacity: 1;
+        -webkit-transform: translateY(0);
+        -ms-transform: translateY(0);
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: translateY(6px);
+        -ms-transform: translateY(6px);
+        transform: translateY(6px);
+    }
+}
+
+@-moz-keyframes mouse-wheel {
+    0% {
+        top: 1px;
+    }
+    25% {
+        top: 2px;
+    }
+    50% {
+        top: 3px;
+    }
+    75% {
+        top: 2px;
+    }
+    100% {
+        top: 1px;
+    }
+}
+
+@-o-keyframes mouse-wheel {
+
+    0% {
+        top: 1px;
+    }
+    25% {
+        top: 2px;
+    }
+    50% {
+        top: 3px;
+    }
+    75% {
+        top: 2px;
+    }
+    100% {
+        top: 1px;
+    }
+}
+
+@keyframes mouse-wheel {
+
+    0% {
+        top: 1px;
+    }
+    25% {
+        top: 2px;
+    }
+    50% {
+        top: 3px;
+    }
+    75% {
+        top: 2px;
+    }
+    100% {
+        top: 1px;
+    }
+}
+
+@-webkit-keyframes mouse-scroll {
+
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-moz-keyframes mouse-scroll {
+
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-o-keyframes mouse-scroll {
+
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes mouse-scroll {
+
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: .5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 20px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+    background-color: #2c7be5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    border-radius: 100px;
+    border: 5px solid transparent;
+    background-clip: content-box;
+    background-color: #2569C3;
+}
+
+.theme-toggle {
+    border-radius: 50px;
+    position: fixed;
+    top: 50%;
+    right: 1%;
+    text-decoration: none;
+    z-index: 1016;
+    background: white;
+    border: 2px solid;
+}
