@@ -43,6 +43,43 @@ class Account(AbstractBaseUser, PermissionsMixin):
         ('P', 'Prefer not to say'),
     )
     
+    CURRENCY_CHOICES = [
+    ("USD", "US Dollar"),
+    ("EUR", "Euro"),
+    ("GBP", "British Pound"),
+    ("JPY", "Japanese Yen"),
+    ("CNY", "Chinese Yuan"),
+    ("INR", "Indian Rupee"),
+    ("AUD", "Australian Dollar"),
+    ("CAD", "Canadian Dollar"),
+    ("CHF", "Swiss Franc"),
+    ("HKD", "Hong Kong Dollar"),
+    ("SGD", "Singapore Dollar"),
+    ("NZD", "New Zealand Dollar"),
+    ("SEK", "Swedish Krona"),
+    ("NOK", "Norwegian Krone"),
+    ("DKK", "Danish Krone"),
+    ("ZAR", "South African Rand"),
+    ("RUB", "Russian Ruble"),
+    ("BRL", "Brazilian Real"),
+    ("MXN", "Mexican Peso"),
+    ("AED", "UAE Dirham"),
+    ("SAR", "Saudi Riyal"),
+    ("KRW", "South Korean Won"),
+    ("TRY", "Turkish Lira"),
+    ("EGP", "Egyptian Pound"),
+    ("NGN", "Nigerian Naira"),
+    ("KES", "Kenyan Shilling"),
+    ("GHS", "Ghanaian Cedi"),
+    ("PKR", "Pakistani Rupee"),
+    ("BDT", "Bangladeshi Taka"),
+    ("THB", "Thai Baht"),
+    ("IDR", "Indonesian Rupiah"),
+    ("MYR", "Malaysian Ringgit"),
+    ("PHP", "Philippine Peso"),
+]
+
+    
     user_id = models.BigIntegerField(default=temporary_numeric_id, editable=False, unique=True, null=True)
     email = models.EmailField(verbose_name="email", max_length=100, unique=True)
     username = models.CharField(max_length=100, unique=True, editable=False)
@@ -54,7 +91,7 @@ class Account(AbstractBaseUser, PermissionsMixin):
     is_superuser = models.BooleanField(default=False)
     fullname = models.CharField(max_length=200)
     phone = models.CharField(max_length=15)
-    currency = models.CharField(max_length=10, choices=[("USDT", "Tether")], default="USDT")
+    currency = models.CharField(max_length=10, choices=CURRENCY_CHOICES, default="USD")
     address = models.TextField(blank=True, null=True)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES, default='P')
     profile_picture = models.ImageField(
