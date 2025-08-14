@@ -1,0 +1,121 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block content %}
+<div class="login-card">
+    <h3 class="mb-2">Create a Goldman.com Account</h3>
+<<<<<<< HEAD
+    <form id="adminCreateUserForm" method="post" action="{% url 'admin_create_user' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+=======
+    <form id="adminCreateUserForm" method="post" action="{% url 'admin_create_user' %}">
+        {% csrf_token %}
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <div class="mb-3">
+            <input type="email" class="form-control" name="email" placeholder="Email" required />
+            {% if form.email.errors %}
+                <div class="text-danger">{{ form.email.errors }}</div>
+            {% endif %}
+        </div>
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <div class="mb-3">
+            <input type="text" class="form-control" name="fullname" placeholder="Full Name" required />
+            {% if form.fullname.errors %}
+                <div class="text-danger">{{ form.fullname.errors }}</div>
+            {% endif %}
+        </div>
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <div class="mb-3">
+            <input type="tel" class="form-control" name="phone" placeholder="Phone" required />
+            {% if form.phone.errors %}
+                <div class="text-danger">{{ form.phone.errors }}</div>
+            {% endif %}
+        </div>
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <div class="mb-3">
+            <input type="text" class="form-control" name="address" placeholder="Address" required />
+            {% if form.address.errors %}
+                <div class="text-danger">{{ form.address.errors }}</div>
+            {% endif %}
+        </div>
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <div class="mb-3">
+            <select class="form-select" name="gender" aria-label="Gender">
+                <option value="P" selected>Prefer not to say</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+            {% if form.gender.errors %}
+                <div class="text-danger">{{ form.gender.errors }}</div>
+            {% endif %}
+        </div>
+<<<<<<< HEAD
+        
+        <div class="mb-3">
+            <input type="file" class="form-control" name="profile_picture" accept="image/*" />
+            {% if form.profile_picture.errors %}
+                <div class="text-danger">{{ form.profile_picture.errors }}</div>
+            {% endif %}
+        </div>
+        
+=======
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <div class="mb-3">
+            <input type="password" class="form-control" name="password" placeholder="Password" required />
+            {% if form.password.errors %}
+                <div class="text-danger">{{ form.password.errors }}</div>
+            {% endif %}
+        </div>
+<<<<<<< HEAD
+        
+=======
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
+        <button type="submit" class="btn btn-primary mb-3">Create User</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('adminCreateUserForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            window.location.href = '/admin/';
+        } else {
+            alert(data.message + '\n' + (data.errors ? JSON.stringify(data.errors) : ''));
+        }
+    })
+    .catch(error => {
+        alert('An error occurred: ' + error);
+    });
+});
+</script>
+<<<<<<< HEAD
+{% endblock %}
+=======
+{% endblock %}
+>>>>>>> 6e8004c99cdcccb17b06aca816dd650965f7bab9
