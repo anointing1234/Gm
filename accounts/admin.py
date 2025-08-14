@@ -1,4 +1,3 @@
-# admin.py
 from django.contrib import admin
 from unfold.admin import ModelAdmin, StackedInline
 from django.utils.html import format_html
@@ -26,23 +25,31 @@ class AccountCreationForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ('email', 'fullname', 'phone', 'address', 'gender', 'profile_picture', 'password')
+        fields = ('email', 'fullname', 'phone', 'address', 'gender', 'profile_picture', 'password', 'currency')
 
     def clean_email(self):
         email = self.cleaned_data['email']
-        if Account.objects.filter(email=email).exists():
+        if Account.objects.filter(email=email).exclude(pk=self.instance.pk).exists():
             raise forms.ValidationError("This email is already registered.")
         return email
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        # Use set_password so password is hashed and your model's raw_password is set
+        # Auto-generate username if not set
+        if not user.username:
+            email_prefix = user.email.split('@')[0]
+            base_username = email_prefix[:100]  # Ensure within max_length
+            user.username = base_username
+            counter = 1
+            # Ensure username is unique
+            while Account.objects.filter(username=user.username).exclude(pk=user.pk).exists():
+                user.username = f"{base_username}_{counter}"
+                counter += 1
         user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
             Balance.objects.get_or_create(user=user)
         return user
-
 
 class InvestmentForm(forms.ModelForm):
     transaction_description = forms.CharField(
@@ -63,7 +70,6 @@ class InvestmentForm(forms.ModelForm):
             raise forms.ValidationError("Please select a user for the investment.")
         return user
 
-
 # -------------------------
 # Inlines (use unfold's StackedInline)
 # -------------------------
@@ -73,7 +79,6 @@ class BalanceInline(StackedInline):
     extra = 0
     fields = ('Active_Initial_Investment', 'Total_Return', 'Total_Available_Withdrawal', 'investment_status')
     readonly_fields = ('user',)
-
 
 class InvestmentHistoryInline(StackedInline):
     model = InvestmentHistory
@@ -98,11 +103,9 @@ class InvestmentHistoryInline(StackedInline):
                 instance.investment = form.instance
             if getattr(instance, 'user', None) is None and getattr(instance, 'investment', None):
                 instance.user = instance.investment.user
-
             if instance.amount is not None and instance.description:
                 instance.save()
         formset.save_m2m()
-
 
 class InvestmentInline(StackedInline):
     model = Investment
@@ -116,7 +119,6 @@ class InvestmentInline(StackedInline):
             if 'user' in formset.form.base_fields:
                 formset.form.base_fields['user'].initial = obj
         return formset
-
 
 # -------------------------
 # Account admin (inherits unfold.admin.ModelAdmin)
@@ -132,7 +134,6 @@ class AccountAdmin(ModelAdmin):
     search_fields = ('user_id', 'email', 'username', 'fullname', 'phone', 'gender')
     readonly_fields = ('user_id', 'date_joined', 'last_login', 'username')
 
-    # Removed "Permissions" section completely
     fieldsets = (
         (None, {
             'fields': (
@@ -166,11 +167,14 @@ class AccountAdmin(ModelAdmin):
         return self.readonly_fields
 
     def save_model(self, request, obj, form, change):
-        raw_pw = None
-        if form and hasattr(form, 'cleaned_data'):
-            raw_pw = form.cleaned_data.get('password')
-        if raw_pw:
-            obj.set_password(raw_pw)
+        if not change and not obj.username:
+            email_prefix = obj.email.split('@')[0]
+            base_username = email_prefix[:100]  # Ensure within max_length
+            obj.username = base_username
+            counter = 1
+            while Account.objects.filter(username=obj.username).exclude(pk=obj.pk).exists():
+                obj.username = f"{base_username}_{counter}"
+                counter += 1
         super().save_model(request, obj, form, change)
 
     def get_urls(self):
@@ -222,9 +226,21 @@ class InvestmentAdmin(ModelAdmin):
         if not obj.user:
             logger.error("Attempted to save Investment without a user")
             raise ValueError("Investment must have a user associated")
-        is_new = not change
+        
+        # Check if investment is valid and active
+        is_active = obj.status == 'ACTIVE'
+        is_valid_investment = (
+            obj.user and
+            obj.start_date and
+            obj.end_date and
+            obj.amount is not None and
+            obj.daily_profit is not None
+        )
+
         super().save_model(request, obj, form, change)
 
+        # Update InvestmentHistory
+        is_new = not change
         if is_new:
             user = obj.user
             description = form.cleaned_data.get('transaction_description') or f"New investment of {obj.amount} created on {timezone.now().date()}"
@@ -242,16 +258,20 @@ class InvestmentAdmin(ModelAdmin):
             else:
                 logger.warning(f"InvestmentHistory entry already exists for investment {obj.id}")
 
-            try:
-                balance, created = Balance.objects.get_or_create(user=user)
+        # Update Balance
+        try:
+            balance, created = Balance.objects.get_or_create(user=obj.user)
+            if is_new:
                 current = Decimal(balance.Active_Initial_Investment or 0)
                 balance.Active_Initial_Investment = current + Decimal(obj.amount)
-                balance.save()
-                logger.info(f"Updated balance for user {user.email} with investment: {obj.amount}")
-            except Exception as e:
-                logger.exception("Error updating balance after creating investment")
-                raise ValueError(f"Could not update balance for user: {user}")
-
+            # Set investment_status to RUNNING if investment is ACTIVE and valid
+            if is_active and is_valid_investment:
+                balance.investment_status = 'RUNNING'
+            balance.save()
+            logger.info(f"Updated balance for user {obj.user.email} with investment: {obj.amount}, status: {balance.investment_status}")
+        except Exception as e:
+            logger.exception("Error updating balance after saving investment")
+            raise ValueError(f"Could not update balance for user: {obj.user}")
 
 @admin.register(InvestmentHistory)
 class InvestmentHistoryAdmin(ModelAdmin):
