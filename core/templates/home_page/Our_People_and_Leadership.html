@@ -1,0 +1,302 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <!-- Basic Page Needs -->
+   <meta charset="utf-8">
+   <title>Our People and Leadership - Goldman Sachs</title>
+   <!-- Mobile Specific Metas -->
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<link rel="icon" type="image/svg+xml" href="{% static 'assets/img/logos/gs-favicon.svg' %}">
+    <link rel="alternate icon" href="{% static 'assets/img/logos/gs-favicon.ico' %}%">
+    <link rel="mask-icon" href="{% static 'assets/img/logos/gs-favicon.ico' %}">
+
+   <!-- CSS -->
+   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/icon-font.css' %}">
+   <link rel="stylesheet" href="{% static 'css/animate.css' %}">
+   <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/owl.theme.default.min.css' %}">
+   <link rel="stylesheet" href="{% static 'css/colorbox.css' %}">
+   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+   <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+
+   <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+   <!--[if lt IE 9]>
+   <script src="js/html5shiv.js"></script>
+   <script src="js/respond.min.js"></script>
+   <![endif]-->
+
+</head>
+
+<body>
+   <div class="body-inner">
+      <div class="site-top">
+         <header class="header-trans-leftbox clearfix" id="header">
+            <div class="container">
+               <div class="header-wrapper clearfix">
+                  <div class="site-nav-inner">
+                     <nav class="navbar navbar-expand-lg">
+                        <div class="navbar-brand navbar-header">
+                           <div class="logo">
+                              <a href="{% url 'home_view' %}">
+                                 <img style="width:200px;" src="{% static 'images/logo.png' %}" alt="Goldman Sachs Logo">
+                              </a>
+                           </div>
+                        </div>
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                           <span class="navbar-toggler-icon"><i class="icon icon-menu"></i></span>
+                        </button>
+                        <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                           <ul class="navbar-nav d-flex align-items-center">
+    <li class="nav-item dropdown ">
+        <a class="nav-link" href="#" data-toggle="dropdown">What We Do<i class="fa fa-angle-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'investment_banking' %}">Investment Banking</a></li>
+            <li><a href="{% url 'assets_management' %}">Assets Management</a></li>
+            <li><a href="{% url 'GlobalInvestmentResearch' %}">Global Investment Research</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link" href="#" data-toggle="dropdown">Insights<i class="fa fa-angle-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'Exchanges' %}">Exchanges</a></li>
+            <li><a href="{% url 'The_Market' %}">The Market</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown active">
+        <a class="nav-link" href="#" data-toggle="dropdown">Our Firm<i class="fa fa-angle-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'about' %}">About Us</a></li>
+            <li><a href="{% url 'Our_People_and_Leadership' %}">Our People and Leadership</a></li>
+            <li><a href="{% url 'community_impact' %}">Community Impact</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item dropdown">
+        <a class="nav-link" href="#" data-toggle="dropdown">Careers<i class="fa fa-angle-down"></i></a>
+        <ul class="dropdown-menu" role="menu">
+            <li><a href="{% url 'students' %}">Students</a></li>
+            <li><a href="{% url 'life_at_gs' %}">Life at GS</a></li>
+          
+        </ul>
+    </li>
+
+                      
+                        <!-- Search icon before login -->
+                        <li class="nav-item">
+                           <a href="#" class="nav-link" id="search"><i class="icon icon-search"></i></a>
+                        </li>
+                        <li class="nav-item">
+                           <div class="search-block" style="display: none;">
+                              <input class="form-control" type="text" placeholder="Search">
+                              <span class="search-close">×</span>
+                           </div>
+                        </li>
+
+                        <!-- Client Login button aligned with links -->
+                        <li class="nav-item">
+                           <a class="nav-link btn btn-primary text-white" href="{% url 'login' %}" style="padding: 8px 16px; margin: 0 10px; line-height: normal; vertical-align: middle;">Client Login</a>
+                        </li>
+                     </ul>
+                        </div>
+                     </nav>
+                  </div>
+               </div>
+            </div>
+         </header>
+      </div>
+
+      <div class="banner-area" id="banner-area" style="background-image:url({% static 'images/banner/banner1.jpg' %});">
+         <div class="container">
+            <div class="row justify-content-center">
+               <div class="col">
+                  <div class="banner-heading">
+                     <h1 class="banner-title">Our People and Leadership</h1>
+                     <ol class="breadcrumb">
+                        <li><a href="{% url 'home_view' %}">Home</a></li>
+                        <li>Our Firm</li>
+                        <li>Our People and Leadership</li>
+                     </ol>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+      <section class="main-container" id="main-container">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                  <h2 class="section-title"><span>Our Leadership</span>Guiding the Future of Finance</h2>
+                  <p>Our leadership team combines deep expertise, innovative thinking, and a commitment to excellence, driving Goldman Sachs to deliver unparalleled value to our clients.</p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-3 col-md-6">
+                  <div class="leadership-profile">
+                     <h3 class="leadership-name">David Solomon</h3>
+                     <p class="leadership-designation">Chairman and Chief Executive Officer</p>
+                     <p class="leadership-description">David leads Goldman Sachs with a focus on strategic growth, innovation, and client-centric solutions, shaping the firm’s global impact.</p>
+                    
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-6">
+                  <div class="leadership-profile">
+                     <h3 class="leadership-name">John Waldron</h3>
+                     <p class="leadership-designation">President and Chief Operating Officer</p>
+                     <p class="leadership-description">John oversees the firm’s operations, driving efficiency and fostering a culture of collaboration and excellence.</p>
+                    
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-6">
+                  <div class="leadership-profile">
+                     <h3 class="leadership-name">Beth Hammack</h3>
+                     <p class="leadership-designation">Co-Head, Global Financing Group</p>
+                     <p class="leadership-description">Beth drives innovative financing solutions, leveraging her expertise to support clients in complex markets.</p>
+                    
+                  </div>
+               </div>
+               <div class="col-lg-3 col-md-6">
+                  <div class="leadership-profile">
+                     <h3 class="leadership-name">Ashok Varadhan</h3>
+                     <p class="leadership-designation">Co-Head, Global Markets</p>
+                     <p class="leadership-description">Ashok leads our global markets division, delivering cutting-edge trading and market-making solutions.</p>
+                    
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      <section class="ts-commitment bg-pattern-2" id="ts-commitment">
+         <div class="container">
+            <div class="row">
+               <div class="col-lg-12">
+                  <h2 class="section-title"><span>Our Commitment</span>Building a Diverse Team</h2>
+                  <p>We are dedicated to fostering an inclusive environment where diverse perspectives drive innovation and success.</p>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-4 col-md-12">
+                  <div class="commitment-box">
+                     <h3 class="commitment-title">Diversity & Inclusion</h3>
+                     <p>We champion diversity, ensuring our teams reflect the global communities we serve, fostering creativity and innovation.</p>
+                     <p><a class="link-more" href="#">Learn More <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+               <div class="col-lg-4 col-md-12">
+                  <div class="commitment-box">
+                     <h3 class="commitment-title">Mentorship Programs</h3>
+                     <p>Our mentorship initiatives empower employees to grow, learn, and lead, building the next generation of financial leaders.</p>
+                     <p><a class="link-more" href="#">Learn More <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+               <div class="col-lg-4 col-md-12">
+                  <div class="commitment-box">
+                     <h3 class="commitment-title">Innovation Culture</h3>
+                     <p>We encourage bold ideas and creative solutions, enabling our people to push boundaries and drive industry change.</p>
+                     <p><a class="link-more" href="#">Learn More <i class="icon icon-right-arrow2"></i></a></p>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+
+
+      <!-- Footer start-->
+      <footer class="footer" id="footer">
+         
+         <!-- Footer top end-->
+         <div class="footer-main bg-overlay">
+            <div class="container">
+               <div class="row">
+                  <div class="col-lg-4 col-md-12 footer-widget footer-about">
+                     <div class="footer-logo">
+                        <a href="{% url 'home_view' %}">
+                           <img style="width: 200px;" src="{% static 'images/logo.png' %}" alt="">
+                        </a>
+                     </div>
+                     <p>We are an award-winning global financial institution, committed to delivering excellence and upholding the highest standards worldwide.</p>
+                     
+                     <!-- Footer social end-->
+                  </div>
+                  <!-- About us end-->
+                 <div class="col-lg-4 col-md-12 footer-widget">
+                     <h3 class="widget-title">Useful Links</h3>
+                     <ul class="list-dash">
+                        <li><a href="{% url 'about' %}">About Us</a></li>
+                        <li><a href="{% url 'investment_banking' %}">What We Do</a></li>
+                        <li><a href="{% url 'Exchanges' %}">Insights</a></li>
+                        <li><a href="{% url 'Our_People_and_Leadership' %}">Our Firm</a></li>
+                        <li><a href="{% url 'students' %}">Careers</a></li>
+                     </ul>
+                  </div>
+                  
+               </div>
+               <!-- Content row end-->
+            </div>
+            <!-- Container end-->
+         </div>
+         <!-- Footer Main-->
+         <div class="copyright">
+            <div class="container">
+               <div class="row">
+                  <div class="col-lg-6 col-md-12">
+                     <div class="copyright-info"><span>© 2025 Goldman Sachs. All rights reserved.</span></div>
+                  </div>
+                  <div class="col-lg-6 col-md-12">
+                     <div class="footer-menu">
+                        <ul class="nav unstyled">
+                           <li><a href="#">Your Privacy Choices</a></li>
+                           <li><a href="#">Terms & Conditions</a></li>
+                           <li><a href="#">Contact</a></li>
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+               <!-- Row end-->
+            </div>
+            <!-- Container end-->
+         </div>
+         <!-- Copyright end-->
+      </footer>
+      <!-- Footer end-->
+
+      <div class="back-to-top affix" id="back-to-top" data-spy="affix" data-offset-top="10">
+         <button class="btn btn-primary" title="Back to Top"><i class="fa fa-angle-double-up"></i></button>
+      </div>
+
+     <!-- initialize jQuery Library-->
+       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <!-- Popper-->
+      <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+      <!-- Bootstrap jQuery-->
+      <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+      <!-- Owl Carousel-->
+      <script type="text/javascript" src="{% static 'js/owl.carousel.min.js' %}"></script>
+      <!-- Counter-->
+      <script type="text/javascript" src="{% static 'js/jquery.counterup.min.js' %}"></script>
+      <!-- Waypoints-->
+      <script type="text/javascript" src="{% static 'js/waypoints.min.js' %}"></script>
+      <!-- Color box-->
+      <script type="text/javascript" src="{% static 'js/jquery.colorbox.js' %}"></script>
+      <!-- Smoothscroll-->
+      <script type="text/javascript" src="{% static 'js/smoothscroll.js' %}"></script>
+      
+      <!-- For Chart-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.2/raphael-min.js"></script>
+      <script type="text/javascript" src="{% static 'js/morris.js' %}"></script>
+      
+      <!-- Template custom-->
+      <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
+   </div>
+</body>
+
+</html>

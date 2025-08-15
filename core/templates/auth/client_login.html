@@ -117,7 +117,7 @@
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            window.location.href = '/'; // Redirect to home page after login
+                            window.location.href = '{% url 'home' %}'; // Redirect to home page after login
                         }
                     });
                 } else {

@@ -50,6 +50,62 @@ from django.db import transaction
 User = get_user_model()
 logger = logging.getLogger(__name__)
 
+
+# home pages 
+
+def home_page(request):
+    return render(request,'home_page/index.html')
+
+def investment_banking(request):
+    return render(request, 'home_page/investment_banking.html')
+
+def assets_management(request):
+    return render(request, 'home_page/assets_management.html')
+
+def GlobalInvestmentResearch(request):
+    return render(request, 'home_page/GlobalInvestmentResearch.html')
+
+def Exchanges(request):
+    return render(request, 'home_page/Exchanges.html')
+
+def The_Market(request):
+    return render(request, 'home_page/The_Market.html')
+
+def about(request):
+    return render(request, 'home_page/about.html')
+
+def Our_People_and_Leadership(request):
+    return render(request, 'home_page/Our_People_and_Leadership.html')
+
+def community_impact(request):
+    return render(request, 'home_page/community-impact.html')
+
+def students(request):
+    return render(request, 'home_page/students.html')
+
+def life_at_gs(request):
+    return render(request, 'home_page/life-at-gs.html')
+
+def Benefits(request):
+    return render(request, 'home_page/benefits.html')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @login_required
 def home_view(request):
     user = request.user
@@ -245,3 +301,8 @@ def logout_view(request):
         request.session.flush()
         return redirect("home") 
     return redirect("home") 
+
+
+
+
+
