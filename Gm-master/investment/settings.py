@@ -36,8 +36,8 @@ SECRET_KEY = 'django-insecure-po9mjbwl!3d6$izl3@g4ece$p6nk4#2zak8dcfw3m_thcrb2al
 DEBUG = False
 
 # ALLOWED_HOSTS = ["*"]
-CSRF_TRUSTED_ORIGINS = ["https://wallet.gm-sach.com"]
-ALLOWED_HOSTS = ["wallet.gm-sach.com"]
+CSRF_TRUSTED_ORIGINS = ["https://wallet.gm-sash.com"]
+ALLOWED_HOSTS = ["wallet.gm-sash.com"]
 
 
 
